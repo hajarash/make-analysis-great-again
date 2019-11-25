@@ -3,7 +3,7 @@ from data_collection.models import Component
 
 def sort_dict_per_value(dict):
     sorted_dict = {}
-    for sorted_key in sorted(dict, key=lambda x: dict[x], reverse=True):
+    for sorted_key in sorted(dict, key=lambda x: dict[x]):
         sorted_dict[sorted_key] = dict[sorted_key]
     return sorted_dict
 
@@ -26,7 +26,10 @@ class FileHierarchy:
         mapping[path] = self.get_component_files(root_component)
         # put all children nodes' num files
         for child in root_component.children:
-            mapping.update(self.get_components_to_num_files_map(child, path + '/' + child.name))
+            kpath = path + '/'
+            if path is '':
+                kpath = ''
+            mapping.update(self.get_components_to_num_files_map(child, kpath + child.name))
         return mapping
 
     def get_component_files(self, root_component: Component):
